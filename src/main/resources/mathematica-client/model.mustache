@@ -1,0 +1,14 @@
+{{#models}}
+{{#model}}
+BeginPackage["{{#invokerPackage}}{{invokerPackage}}`{{/invokerPackage}}{{classname}}`"];
+
+Construct{{classname}}::usage = "Construct{{classname}}[] - Create an Association that represents the {{classname}} model with keys defined and defaults populated.{{#summary}} {{classname}} summary: {{summary}}{{/summary}}";
+
+Begin["`Private`"];
+Construct{{classname}}[]:=(
+association = <|{{#vars}}"{{baseName}}" -> {{{defaultValue}}}{{#hasMore}}, {{/hasMore}}{{/vars}}|>;
+Return[association];
+);
+End[];{{/model}}{{/models}}
+
+EndPackage[];

@@ -1,0 +1,54 @@
+BeginPackage["{{#invokerPackage}}{{invokerPackage}}{{/invokerPackage}}{{^invokerPackage}}Main{{/invokerPackage}}`"];{{#apiInfo}}
+{{#apis}}{{#operations}}
+Needs["{{#invokerPackage}}{{invokerPackage}}`{{/invokerPackage}}{{classname}}`"];{{/operations}}{{/apis}}{{/apiInfo}}{{#models}}{{#model}}
+Needs["{{#invokerPackage}}{{invokerPackage}}`{{/invokerPackage}}{{classname}}`"];{{/model}}{{/models}}
+
+Begin["`Private`"];
+basePath="{{basePath}}";
+End[];
+
+SetBasePath::usage = "SetBasePath[path_String] - Set base path.";
+
+Begin["`Private`"];
+SetBasePath[path_String]:=(
+basePath=path;
+);
+End[];
+
+Begin["`Private`"];
+interactive=True;
+End[];
+
+SetInteractive::usage = "SetInteractive[i_Boolean] - Set whether user interactivity for requests is enabled.";
+
+Begin["`Private`"];
+SetInteractive[i_]:=(
+interactive=i;
+);
+End[];{{#authMethods}}{{#isBasic}}
+
+Begin["`Private`"];
+{{name}}Auth=Null;
+End[];
+
+Set{{name}}Auth::usage = "Set{{name}}Auth[username_String, password_String] - Set {{type}} authentication method named {{name}}.";
+
+Begin["`Private`"];
+Set{{name}}Auth[username_String, password_String]:=(
+{{name}}Auth="Basic " <> ExportString[username <> ":" <> password, "Base64"];
+);
+End[];{{/isBasic}}{{#isApiKey}}{{#isKeyInQuery}}
+
+Begin["`Private`"];
+{{name}}Auth=Null;
+End[];
+
+Set{{name}}Auth::usage = "Set{{name}}Auth[username_String, password_String] - Set {{type}} authentication method named {{name}}.";
+
+Begin["`Private`"];
+Set{{name}}Auth[ticket_String]:=(
+{{name}}Auth=ticket;
+);
+End[];{{/isKeyInQuery}}{{/isApiKey}}{{/authMethods}}
+
+EndPackage[];

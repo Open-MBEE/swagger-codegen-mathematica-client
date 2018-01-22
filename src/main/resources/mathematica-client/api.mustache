@@ -1,0 +1,31 @@
+{{#operations}}
+BeginPackage["{{#invokerPackage}}{{invokerPackage}}`{{/invokerPackage}}{{classname}}`"];{{#operation}}
+
+{{operationId}}::usage = "{{operationId}}[{{#allParams}}{{#required}}{{paramName}}_{{#dataType}}{{#isPrimitiveType}}{{dataType}}{{/isPrimitiveType}}{{^isPrimitiveType}}Association{{/isPrimitiveType}}{{/dataType}}, {{/required}}{{/allParams}}OptionsPattern[{{#allParams}}{{^required}}{{paramName}}_{{#dataType}}{{#isPrimitiveType}}{{dataType}}{{/isPrimitiveType}}{{^isPrimitiveType}}Association{{/isPrimitiveType}}{{/dataType}}{{#hasMore}}, {{/hasMore}}{{/required}}{{/allParams}}]]{{#summary}} - {{summary}}{{/summary}}";
+
+Begin["`Private`"];{{#hasOptionalParams}}
+options={};{{#allParams}}{{^required}}
+AppendTo[options, {{paramName}} -> Null];{{/required}}{{/allParams}}
+Options[{{operationId}}]=options;{{/hasOptionalParams}}
+
+{{operationId}}[{{#allParams}}{{#required}}{{paramName}}_{{#dataType}}{{#isPrimitiveType}}{{dataType}}{{/isPrimitiveType}}{{^isPrimitiveType}}Association{{/isPrimitiveType}}{{/dataType}}, {{/required}}{{/allParams}}OptionsPattern[]]:=(
+relativePath="{{path}}";{{#pathParams}}
+If[{{#required}}{{paramName}}{{/required}}{{^required}}OptionValue[{{paramName}}]{{/required}} =!= Null, relativePath=StringReplace[relativePath, "{" <> "{{baseName}}" <> "}" -> {{#required}}{{paramName}}{{/required}}{{^required}}OptionValue[{{paramName}}]{{/required}}]];{{/pathParams}}
+path={{#invokerPackage}}{{invokerPackage}}{{/invokerPackage}}{{^invokerPackage}}Main{{/invokerPackage}}`Private`basePath{{#path}} <> relativePath{{/path}};
+url=URLParse[path];
+queryParams=<||>;{{#queryParams}}
+If[{{#required}}{{paramName}}{{/required}}{{^required}}OptionValue[{{paramName}}]{{/required}} =!= Null, queryParams["{{baseName}}"]={{#required}}{{paramName}}{{/required}}{{^required}}OptionValue[{{paramName}}]{{/required}}];{{/queryParams}}{{#authMethods}}{{#isApiKey}}{{#isKeyInQuery}}
+If[{{#invokerPackage}}{{invokerPackage}}{{/invokerPackage}}{{^invokerPackage}}Main{{/invokerPackage}}`{{name}}Auth =!= Null, queryParams["{{keyParamName}}"]={{#invokerPackage}}{{invokerPackage}}{{/invokerPackage}}{{^invokerPackage}}Main{{/invokerPackage}}`{{name}}Auth];{{/isKeyInQuery}}{{/isApiKey}}{{/authMethods}}
+url=URLBuild[url, queryParams];
+request=<||>;
+request["Method"]="{{httpMethod}}";{{#bodyParam}}
+request["Body"]=ExportString[{{paramName}}, "RawJSON", "Compact" -> True];{{/bodyParam}}
+request["ContentType"]="application/json";
+headers=<||>;{{#authMethods}}{{#isBasic}}
+If[ValueQ[{{#invokerPackage}}{{invokerPackage}}{{/invokerPackage}}{{^invokerPackage}}Main{{/invokerPackage}}`{{name}}Auth] && {{#invokerPackage}}{{invokerPackage}}{{/invokerPackage}}{{^invokerPackage}}Main{{/invokerPackage}}`{{name}}Auth =!= Null, headers["Authorization"]={{#invokerPackage}}{{invokerPackage}}{{/invokerPackage}}{{^invokerPackage}}Main{{/invokerPackage}}`{{name}}Auth];{{/isBasic}}{{/authMethods}}
+request["Headers"]=headers;
+Return[ImportString[ExportString[URLExecute[HTTPRequest[url, request, "Interactive" -> {{#invokerPackage}}{{invokerPackage}}{{/invokerPackage}}{{^invokerPackage}}Main{{/invokerPackage}}`interactive]], "JSON", "Compact" -> True], "RawJSON"]];
+);
+End[];{{/operation}}{{/operations}}
+
+EndPackage[];
