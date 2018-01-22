@@ -2,3 +2,5 @@
 target
 *.iml
 generated-code
+__MACOSX
+.DS_Store
