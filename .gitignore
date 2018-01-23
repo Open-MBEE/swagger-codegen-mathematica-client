@@ -4,3 +4,5 @@ target
 generated-code
 __MACOSX
 .DS_Store
+.gradle
+build
