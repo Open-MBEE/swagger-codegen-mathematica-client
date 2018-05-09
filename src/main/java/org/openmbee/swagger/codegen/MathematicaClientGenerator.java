@@ -171,7 +171,11 @@ public class MathematicaClientGenerator extends DefaultCodegen implements Codege
         }
 
         return super.getTypeDeclaration(p);
+    }
 
+    @Override
+    public String getTypeDeclaration(String name) {
+        return "Association";
     }
 
     /**
