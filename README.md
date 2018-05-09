@@ -30,13 +30,13 @@ The client includes something along these lines:
 You can run this:
 
 ```
-mvn package
+./gradlew assemble
 ```
 
-In your generator project.  A single jar file will be produced in `target`.  You can now use that with codegen:
+In your generator project.  A single jar file will be produced in `build/libs`.  You can now use that with codegen:
 
 ```
-java -cp /path/to/swagger-codegen-cli.jar:/path/to/your.jar io.swagger.codegen.Codegen -l mathematica-client -i /path/to/swagger.yaml -o ./test
+java -cp /path/to/swagger-codegen-cli.jar:/path/to/your.jar io.swagger.codegen.SwaggerCodegen generate -l mathematica-client -i /path/to/swagger.yaml -o ./test -DinvokerPackage=API_NAME
 ```
 
 Now your templates are available to the client generator and you can write output values
@@ -48,9 +48,7 @@ Now your templates are available to the client generator and you can write outpu
 # -DdebugOperations prints operations passed to the template engine
 # -DdebugSupportingFiles prints additional data passed to the template engine
 
-java -DdebugOperations -cp /path/to/swagger-codegen-cli.jar:/path/to/your.jar io.swagger.codegen.Codegen -l mathematica-client -i /path/to/swagger.yaml -o ./test
+java -DdebugOperations -cp /path/to/swagger-codegen-cli.jar:/path/to/your.jar io.swagger.codegen.SwaggerCodegen generate -l mathematica-client -i /path/to/swagger.yaml -o ./test -DinvokerPackage=API_NAME
 ```
 
 Will, for example, output the debug info for operations.
-
-It is also highly recommended to specify -DinvokerPackage=API_NAME to prevent namespace conflicts when generating multiple client libraries.
