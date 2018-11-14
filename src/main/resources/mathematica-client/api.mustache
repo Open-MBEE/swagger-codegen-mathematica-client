@@ -22,7 +22,7 @@ If[{{#required}}{{paramName}}{{/required}}{{^required}}OptionValue[{{paramName}}
 request=<||>;
 request["Method"]="{{httpMethod}}";
 request["ContentType"]="{{#consumes}}{{mediaType}}{{/consumes}}{{^consumes}}application/json{{/consumes}}";{{#hasBodyParam}}{{#bodyParam}}
-request["Body"]={{paramName}};
+request["Body"]={{#required}}{{paramName}}{{/required}}{{^required}}If[OptionValue[{{paramName}}] =!= Null, OptionValue[{{paramName}}],""]{{/required}};
 If[request["ContentType"] == "application/json", request["Body"]=ExportString[request["Body"], "RawJSON", "Compact" -> True]];{{/bodyParam}}{{/hasBodyParam}}{{#hasFormParams}}
 request["Body"]=formParams;{{/hasFormParams}}
 headers=<||>;{{#authMethods}}{{#isBasic}}
