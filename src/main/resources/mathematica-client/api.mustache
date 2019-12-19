@@ -28,7 +28,8 @@ request["Body"]=formParams;{{/hasFormParams}}
 headers=<||>;{{#authMethods}}{{#isBasic}}
 If[ValueQ[{{#invokerPackage}}{{invokerPackage}}{{/invokerPackage}}{{^invokerPackage}}Main{{/invokerPackage}}`{{name}}Auth] && {{#invokerPackage}}{{invokerPackage}}{{/invokerPackage}}{{^invokerPackage}}Main{{/invokerPackage}}`{{name}}Auth =!= Null, headers["Authorization"]={{#invokerPackage}}{{invokerPackage}}{{/invokerPackage}}{{^invokerPackage}}Main{{/invokerPackage}}`{{name}}Auth];{{/isBasic}}{{/authMethods}}
 request["Headers"]=headers;
-Return[ImportString[ExportString[URLExecute[HTTPRequest[url, request, "Interactive" -> {{#invokerPackage}}{{invokerPackage}}{{/invokerPackage}}{{^invokerPackage}}Main{{/invokerPackage}}`interactive]], "JSON", "Compact" -> True], "RawJSON"]];
+response=URLExecute[HTTPRequest[url, request, "Interactive" -> {{#invokerPackage}}{{invokerPackage}}{{/invokerPackage}}{{^invokerPackage}}Main{{/invokerPackage}}`interactive]]
+If[Not[FailureQ[response]]&&response["StatusCode"]==200,Return[ImportString[ExportString[response, "JSON", "Compact" -> True], "RawJSON"]],Failure["Failed",response]]
 );
 End[];{{/operation}}{{/operations}}
 
