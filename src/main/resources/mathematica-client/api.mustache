@@ -29,7 +29,7 @@ headers=<||>;{{#authMethods}}{{#isBasic}}
 If[ValueQ[{{#invokerPackage}}{{invokerPackage}}{{/invokerPackage}}{{^invokerPackage}}Main{{/invokerPackage}}`{{name}}Auth] && {{#invokerPackage}}{{invokerPackage}}{{/invokerPackage}}{{^invokerPackage}}Main{{/invokerPackage}}`{{name}}Auth =!= Null, headers["Authorization"]={{#invokerPackage}}{{invokerPackage}}{{/invokerPackage}}{{^invokerPackage}}Main{{/invokerPackage}}`{{name}}Auth];{{/isBasic}}{{/authMethods}}
 request["Headers"]=headers;
 response=URLExecute[HTTPRequest[url, request, "Interactive" -> {{#invokerPackage}}{{invokerPackage}}{{/invokerPackage}}{{^invokerPackage}}Main{{/invokerPackage}}`interactive]]
-If[Not[FailureQ[response]]&&response["StatusCode"]==200,Return[ImportString[ExportString[response, "JSON", "Compact" -> True], "RawJSON"]],Failure["Failed",response]]
+If[Not[FailureQ[response]]&&response["StatusCode"]==200,Return[ImportString[ExportString[response, "JSON", "Compact" -> True], "RawJSON"]],Failure["StatusCode",<|"MessageTemplate"->"`status` Error",response["StatusCode"]|>]]
 );
 End[];{{/operation}}{{/operations}}
 
